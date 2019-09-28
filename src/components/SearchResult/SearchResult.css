@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Be+Vietnam:400,600&display=swap');
+.SearchResult {
+    margin-left: auto;
+}
+
+.Artist {
+    font-family: 'Be Vietnam', sans-serif;
+    font-weight: bold;
+}
