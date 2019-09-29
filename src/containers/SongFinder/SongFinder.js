@@ -1,34 +1,46 @@
 import React, { Component } from "react";
 import PanelSearchResults from "../../components/PanelSearchResults/PanelSearchResults";
-import { Route } from "react-router-dom";
 
 import Auxilliary from "../../hoc/Auxilliary";
 
 class SongFinder extends Component {
+  state = {
+    searchValue: "",
+    finalSearchValue: ""
+  };
+
+  constructor() {
+    super();
+    this.submitQueryHandler = this.submitQueryHandler.bind(this);
+  }
+
+  updateInputValue(evt) {
+    this.setState({
+      searchValue: evt.target.value
+    });
+    console.log(this.state.searchValue);
+  }
+
+  submitQueryHandler() {
+    console.log(this.state.finalSearchValue);
+    this.setState({
+      finalSearchValue: this.state.searchValue
+    });
+  }
+
   render() {
     return (
       <Auxilliary>
-        <Route
-          path="/"
-          exact
-          render={() => (
-            <Auxilliary>
-              <div>Input Component</div>
-              <div>Submit Button Component</div>
-              <PanelSearchResults />
-            </Auxilliary>
-          )}
-        />
-        <Route
-          path="/info"
-          exact
-          render={() => (
-            <Auxilliary>
-              <div>INFO</div>
-              <div></div>
-            </Auxilliary>
-          )}
-        />
+        <div>
+          <input
+            value={this.state.searchValue}
+            onChange={evt => this.updateInputValue(evt)}
+          />
+          <button type="submit" onClick={this.submitQueryHandler}>
+            Submit
+          </button>
+        </div>
+        <PanelSearchResults search={this.state.finalSearchValue} />
       </Auxilliary>
     );
   }
