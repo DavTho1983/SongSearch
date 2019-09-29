@@ -5,11 +5,6 @@ class SongInfo extends Component {
     trackId: null
   };
 
-  componentDidMount() {
-    // const query = new URLSearchParams(this.props.location.search);
-    // const trackId = query.entries();
-    console.log("PROPS", this.props);
-  }
   render() {
     return (
       <table>

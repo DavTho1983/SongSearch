@@ -9,6 +9,11 @@ import SongInfo from "../../containers/SongInfo/SongInfo";
 class PanelSearchResults extends Component {
   state = {
     searchResults: [],
+    sliceStart: 0,
+    sliceEnd: 25,
+    nextDisabled: false,
+    prevDisabled: true,
+    current25: [],
     searchResult: {
       id: null,
       artistId: null,
@@ -23,6 +28,8 @@ class PanelSearchResults extends Component {
   constructor() {
     super();
     this.resultSelectedHandler = this.resultSelectedHandler.bind(this);
+    this.getPrevTwentyFive = this.getPrevTwentyFive.bind(this);
+    this.getNextTwentyFive = this.getNextTwentyFive.bind(this);
   }
 
   componentDidUpdate() {
@@ -31,7 +38,6 @@ class PanelSearchResults extends Component {
       .get(searchQuery)
       .then(response => {
         this.setState({ searchResults: response.data.results });
-        console.log(response.data);
       })
       .catch(error => {
         console.log(error);
@@ -62,8 +68,33 @@ class PanelSearchResults extends Component {
     this.setState({ searchResult });
   }
 
+  getPrevTwentyFive() {
+    if (this.state.sliceStart - 25 >= 0) {
+      const newSliceStart = this.state.sliceStart - 25;
+      const newSliceEnd = this.state.sliceEnd - 25;
+      this.setState({ sliceStart: newSliceStart });
+      this.setState({ sliceEnd: newSliceEnd });
+      this.setState({ nextDisabled: false });
+      if (0 <= newSliceStart) {
+        this.setState({ prevDisabled: true });
+      }
+    }
+  }
+
+  getNextTwentyFive() {
+    if (this.state.sliceEnd < this.state.searchResults.length) {
+      const newSliceStart = this.state.sliceStart + 25;
+      const newSliceEnd = this.state.sliceEnd + 25;
+      this.setState({ sliceStart: newSliceStart });
+      this.setState({ sliceEnd: newSliceEnd });
+      this.setState({ prevDisabled: false });
+      if (this.state.searchResults.length === newSliceEnd) {
+        this.setState({ nextDisabled: true });
+      }
+    }
+  }
+
   render() {
-    console.log(this.state);
     const results = this.state.searchResults.map(searchResult => {
       return (
         <SearchResult
@@ -84,45 +115,62 @@ class PanelSearchResults extends Component {
         />
       );
     });
-    return (
-      <Switch>
-        <Route
-          path="/"
-          exact
-          render={() => (
-            <Auxilliary>
-              <h1>SEARCH {this.props.search}</h1>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Track</th>
-                    <th>Album</th>
-                    <th>Artist</th>
-                  </tr>
-                </thead>
-                <tbody>{results}</tbody>
-              </table>
-            </Auxilliary>
-          )}
-        />
-        <Route
-          path="/info"
-          render={props => (
-            <Auxilliary>
-              <h1>Info</h1>
-              <SongInfo
-                id={this.state.searchResult.id}
-                artistName={this.state.searchResult.artistName}
-                track={this.state.searchResult.track}
-                collectionName={this.state.searchResult.collectionName}
-                kind={this.state.searchResult.kind}
-                trackPrice={this.state.searchResult.trackPrice}
-              />
-            </Auxilliary>
-          )}
-        />
-      </Switch>
-    );
+    if (results.length !== 0) {
+      return (
+        <Switch>
+          <Route
+            path="/"
+            exact
+            render={() => (
+              <Auxilliary>
+                <button
+                  disabled={this.state.prevDisabled}
+                  onClick={this.getPrevTwentyFive}
+                >
+                  Prev 25
+                </button>
+                <button
+                  disabled={this.state.nextDisabled}
+                  onClick={this.getNextTwentyFive}
+                >
+                  Next 25
+                </button>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Track</th>
+                      <th>Album</th>
+                      <th>Artist</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {results.slice(this.state.sliceStart, this.state.sliceEnd)}
+                  </tbody>
+                </table>
+              </Auxilliary>
+            )}
+          />
+          <Route
+            path="/info"
+            render={() => (
+              <Auxilliary>
+                <h1>Info</h1>
+                <SongInfo
+                  id={this.state.searchResult.id}
+                  artistName={this.state.searchResult.artistName}
+                  track={this.state.searchResult.track}
+                  collectionName={this.state.searchResult.collectionName}
+                  kind={this.state.searchResult.kind}
+                  trackPrice={this.state.searchResult.trackPrice}
+                />
+              </Auxilliary>
+            )}
+          />
+        </Switch>
+      );
+    } else {
+      return <span></span>;
+    }
   }
 }
 

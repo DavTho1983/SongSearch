@@ -18,13 +18,14 @@ class SongFinder extends Component {
     this.setState({
       searchValue: evt.target.value
     });
-    console.log(this.state.searchValue);
   }
 
   submitQueryHandler() {
-    console.log(this.state.finalSearchValue);
     this.setState({
       finalSearchValue: this.state.searchValue
+    });
+    this.props.history.push({
+      pathname: "/"
     });
   }
 
