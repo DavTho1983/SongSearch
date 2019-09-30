@@ -95,10 +95,10 @@ class PanelSearchResults extends Component {
   }
 
   render() {
-    const results = this.state.searchResults.map(searchResult => {
+    const results = this.state.searchResults.map((searchResult, index) => {
       return (
         <SearchResult
-          key={searchResult.trackId}
+          key={index}
           artist={searchResult.artistName}
           track={searchResult.trackName}
           album={searchResult.collectionName}
