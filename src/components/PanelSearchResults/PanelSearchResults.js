@@ -6,6 +6,8 @@ import Auxilliary from "../../hoc/Auxilliary";
 import SearchResult from "../SearchResult/SearchResult";
 import SongInfo from "../../containers/SongInfo/SongInfo";
 
+import classes from "./PanelSearchResults.css";
+
 class PanelSearchResults extends Component {
   state = {
     searchResults: [],
@@ -123,18 +125,21 @@ class PanelSearchResults extends Component {
             exact
             render={() => (
               <Auxilliary>
-                <button
-                  disabled={this.state.prevDisabled}
-                  onClick={this.getPrevTwentyFive}
-                >
-                  Prev 25
-                </button>
-                <button
-                  disabled={this.state.nextDisabled}
-                  onClick={this.getNextTwentyFive}
-                >
-                  Next 25
-                </button>
+                <div className={classes.container}>
+                  <button
+                    disabled={this.state.prevDisabled}
+                    onClick={this.getPrevTwentyFive}
+                  >
+                    Prev 25
+                  </button>
+                  <button
+                    disabled={this.state.nextDisabled}
+                    onClick={this.getNextTwentyFive}
+                  >
+                    Next 25
+                  </button>
+                </div>
+
                 <table>
                   <thead>
                     <tr>

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PanelSearchResults from "../../components/PanelSearchResults/PanelSearchResults";
 
+import "./SongFinder.css";
 import Auxilliary from "../../hoc/Auxilliary";
 
 class SongFinder extends Component {
@@ -34,6 +35,7 @@ class SongFinder extends Component {
       <Auxilliary>
         <div>
           <input
+            className="searchBox"
             value={this.state.searchValue}
             onChange={evt => this.updateInputValue(evt)}
           />

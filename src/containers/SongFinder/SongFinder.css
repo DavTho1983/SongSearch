@@ -1,0 +1,26 @@
+input {
+    border: 1px solid #4CAF50 !important;
+    color: #4CAF50 !important;
+    font-size: 2rem;
+    padding: 15px;
+}
+
+button {
+    border: none;
+    padding: 15px;
+    margin-left: 4rem;
+    color: white !important;
+    background-color: #4CAF50;
+    font-size: 2rem;
+}
+
+button:hover {
+    background-color: rgb(19, 46, 20);
+    cursor: pointer;
+}
+
+button:disabled {
+    background-color: rgb(36, 43, 36);
+    color: grey;
+    cursor: not-allowed;
+}
