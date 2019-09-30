@@ -6,3 +6,11 @@ table {
     border: 1px solid #4CAF50;
     width: 95vw;
 }
+
+th {
+    text-align: left;
+}
+
+h1 {
+    color: #4CAF50;
+}

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import axios from "axios";
+import axios from "../../hoc/axios-iTunes";
 import { Route, Switch, withRouter } from "react-router-dom";
 
 import Auxilliary from "../../hoc/Auxilliary";
