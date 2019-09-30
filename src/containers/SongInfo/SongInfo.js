@@ -3,6 +3,8 @@ import Auxilliary from "../../hoc/Auxilliary";
 
 import axios from "../../hoc/axios-Firebase";
 
+import classes from "./SongInfo.css";
+
 class SongInfo extends Component {
   state = {
     trackId: null
@@ -58,7 +60,12 @@ class SongInfo extends Component {
             </tr>
           </tbody>
         </table>
-        <button onClick={this.addToPlaylistHandler}>Add to Playlist</button>
+        <button
+          className={classes.addToPlaylist}
+          onClick={this.addToPlaylistHandler}
+        >
+          Add to Playlist
+        </button>
       </Auxilliary>
     );
   }

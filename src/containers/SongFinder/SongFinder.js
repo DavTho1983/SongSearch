@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import PanelSearchResults from "../../components/PanelSearchResults/PanelSearchResults";
+import Playlist from "../Playlist/Playlist";
 
-import "./SongFinder.css";
+import classes from "./SongFinder.css";
 import Auxilliary from "../../hoc/Auxilliary";
 
 class SongFinder extends Component {
@@ -33,7 +34,7 @@ class SongFinder extends Component {
   render() {
     return (
       <Auxilliary>
-        <div>
+        <div className={classes.panel}>
           <input
             className="searchBox"
             value={this.state.searchValue}
@@ -42,6 +43,10 @@ class SongFinder extends Component {
           <button type="submit" onClick={this.submitQueryHandler}>
             Submit
           </button>
+        </div>
+        <div className={classes.panel}>
+          <h1>Playlist</h1>
+          <Playlist />
         </div>
         <PanelSearchResults search={this.state.finalSearchValue} />
       </Auxilliary>
