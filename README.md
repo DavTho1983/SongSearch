@@ -25,4 +25,6 @@ At the moment there is no Back button from the Info page and this means to go ba
 
 There is a bug with the Add to Playlist function where the reducer adds the same data twice to the playlist in the store, and I think this is because I need to wait for the axios request to return before I allow new input
 
+There is no top 10 searching button as I ran out of time.
+
 The audio / video player does not currently display on the info page - I was not sure what webplayer to use, had some issues with redux and prioritised those. The entity property on the iTunes API should contain the file, but I havent had time to investigate.
