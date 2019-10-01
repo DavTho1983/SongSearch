@@ -1,0 +1,5 @@
+export const UPDATE_INPUT_VALUE = "UPDATE_INPUT_VALUE";
+export const SUBMIT_QUERY = "SUBMIT_QUERY";
+export const SET_SEARCH_RESULTS = "SET_SEARCH_RESULTS";
+export const GET_PREV_25 = "GET_PREV_25";
+export const GET_NEXT_25 = "GET_NEXT_25";

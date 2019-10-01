@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import axios from "../../hoc/axios-iTunes";
 import { Route, Switch, withRouter } from "react-router-dom";
 
@@ -7,6 +8,7 @@ import SearchResult from "../SearchResult/SearchResult";
 import SongInfo from "../../containers/SongInfo/SongInfo";
 
 import classes from "./PanelSearchResults.css";
+import * as actionTypes from "../../store/actions";
 
 class PanelSearchResults extends Component {
   state = {
@@ -15,7 +17,6 @@ class PanelSearchResults extends Component {
     sliceEnd: 25,
     nextDisabled: false,
     prevDisabled: true,
-    current25: [],
     searchResult: {
       id: null,
       artistId: null,
@@ -27,8 +28,8 @@ class PanelSearchResults extends Component {
     }
   };
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.resultSelectedHandler = this.resultSelectedHandler.bind(this);
     this.getPrevTwentyFive = this.getPrevTwentyFive.bind(this);
     this.getNextTwentyFive = this.getNextTwentyFive.bind(this);
@@ -39,7 +40,7 @@ class PanelSearchResults extends Component {
     axios
       .get(searchQuery)
       .then(response => {
-        this.setState({ searchResults: response.data.results });
+        this.props.onGetSearchResults(response.data.results);
       })
       .catch(error => {
         console.log(error);
@@ -71,33 +72,17 @@ class PanelSearchResults extends Component {
   }
 
   getPrevTwentyFive() {
-    if (this.state.sliceStart - 25 >= 0) {
-      const newSliceStart = this.state.sliceStart - 25;
-      const newSliceEnd = this.state.sliceEnd - 25;
-      this.setState({ sliceStart: newSliceStart });
-      this.setState({ sliceEnd: newSliceEnd });
-      this.setState({ nextDisabled: false });
-      if (0 <= newSliceStart) {
-        this.setState({ prevDisabled: true });
-      }
-    }
+    this.props.onGetPrevTwentyFive();
+    console.log(this.props);
   }
 
   getNextTwentyFive() {
-    if (this.state.sliceEnd < this.state.searchResults.length) {
-      const newSliceStart = this.state.sliceStart + 25;
-      const newSliceEnd = this.state.sliceEnd + 25;
-      this.setState({ sliceStart: newSliceStart });
-      this.setState({ sliceEnd: newSliceEnd });
-      this.setState({ prevDisabled: false });
-      if (this.state.searchResults.length === newSliceEnd) {
-        this.setState({ nextDisabled: true });
-      }
-    }
+    this.props.onGetNextTwentyFive();
+    console.log(this.props);
   }
 
   render() {
-    const results = this.state.searchResults.map((searchResult, index) => {
+    const results = this.props.searchResults.map((searchResult, index) => {
       return (
         <SearchResult
           key={index}
@@ -127,13 +112,13 @@ class PanelSearchResults extends Component {
               <Auxilliary>
                 <div className={classes.container}>
                   <button
-                    disabled={this.state.prevDisabled}
+                    disabled={this.props.prevDisabled}
                     onClick={this.getPrevTwentyFive}
                   >
                     Prev 25
                   </button>
                   <button
-                    disabled={this.state.nextDisabled}
+                    disabled={this.props.nextDisabled}
                     onClick={this.getNextTwentyFive}
                   >
                     Next 25
@@ -149,7 +134,7 @@ class PanelSearchResults extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {results.slice(this.state.sliceStart, this.state.sliceEnd)}
+                    {results.slice(this.props.sliceStart, this.props.sliceEnd)}
                   </tbody>
                 </table>
               </Auxilliary>
@@ -179,4 +164,36 @@ class PanelSearchResults extends Component {
   }
 }
 
-export default withRouter(PanelSearchResults);
+const mapStateToProps = state => {
+  return {
+    searchResults: state.searchResults,
+    sliceStart: state.sliceStart,
+    sliceEnd: state.sliceEnd,
+    nextDisabled: state.nextDisabled,
+    prevDisabled: state.prevDisabled,
+    searchResult: state.searchResult
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onGetSearchResults: value =>
+      dispatch({
+        type: actionTypes.SET_SEARCH_RESULTS,
+        searchResults: value
+      }),
+    onGetPrevTwentyFive: () =>
+      dispatch({
+        type: actionTypes.GET_PREV_25
+      }),
+    onGetNextTwentyFive: () =>
+      dispatch({
+        type: actionTypes.GET_NEXT_25
+      })
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(PanelSearchResults));
