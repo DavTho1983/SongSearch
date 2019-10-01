@@ -67,14 +67,16 @@ class SongInfo extends Component {
         </table>
         <button
           className={classes.addToPlaylist}
-          onClick={this.addToPlaylistHandler(
-            this.props.track,
-            this.props.id,
-            this.props.artistName,
-            this.props.collectionName,
-            this.props.kind,
-            this.props.trackPrice
-          )}
+          onClick={() =>
+            this.addToPlaylistHandler(
+              this.props.track,
+              this.props.id,
+              this.props.artistName,
+              this.props.collectionName,
+              this.props.kind,
+              this.props.trackPrice
+            )
+          }
         >
           Add to Playlist
         </button>

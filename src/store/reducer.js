@@ -47,7 +47,7 @@ const reducer = (state = initialState, action) => {
       newPlaylist.push(action.playlistItem);
       return {
         ...state,
-        playlist: newPlaylist
+        playlist: [...state.playlist, action.playlistItem]
       };
     case actionTypes.SET_INFO_SEARCH_RESULT:
       return {
