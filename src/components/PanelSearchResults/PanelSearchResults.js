@@ -11,23 +11,6 @@ import classes from "./PanelSearchResults.css";
 import * as actionTypes from "../../store/actions";
 
 class PanelSearchResults extends Component {
-  state = {
-    searchResults: [],
-    sliceStart: 0,
-    sliceEnd: 25,
-    nextDisabled: false,
-    prevDisabled: true,
-    searchResult: {
-      id: null,
-      artistId: null,
-      artistName: "",
-      track: "",
-      collectionName: "",
-      kind: "",
-      trackPrice: null
-    }
-  };
-
   constructor(props) {
     super(props);
     this.resultSelectedHandler = this.resultSelectedHandler.bind(this);
@@ -61,14 +44,14 @@ class PanelSearchResults extends Component {
       pathname: path,
       search: "?" + queryParams
     });
-    const searchResult = { ...this.state.searchResult };
+    const searchResult = { ...this.props.searchResult };
     searchResult.id = id;
     searchResult.artistName = artistName;
     searchResult.track = track;
     searchResult.collectionName = collectionName;
     searchResult.kind = kind;
     searchResult.trackPrice = trackPrice;
-    this.setState({ searchResult });
+    this.props.onSetSearchResult(searchResult);
   }
 
   getPrevTwentyFive() {
@@ -146,12 +129,12 @@ class PanelSearchResults extends Component {
               <Auxilliary>
                 <h1>Info</h1>
                 <SongInfo
-                  id={this.state.searchResult.id}
-                  artistName={this.state.searchResult.artistName}
-                  track={this.state.searchResult.track}
-                  collectionName={this.state.searchResult.collectionName}
-                  kind={this.state.searchResult.kind}
-                  trackPrice={this.state.searchResult.trackPrice}
+                  id={this.props.searchResult.id}
+                  artistName={this.props.searchResult.artistName}
+                  track={this.props.searchResult.track}
+                  collectionName={this.props.searchResult.collectionName}
+                  kind={this.props.searchResult.kind}
+                  trackPrice={this.props.searchResult.trackPrice}
                 />
               </Auxilliary>
             )}
@@ -181,6 +164,11 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: actionTypes.SET_SEARCH_RESULTS,
         searchResults: value
+      }),
+    onSetSearchResult: value =>
+      dispatch({
+        type: actionTypes.SET_INFO_SEARCH_RESULT,
+        searchResult: value
       }),
     onGetPrevTwentyFive: () =>
       dispatch({

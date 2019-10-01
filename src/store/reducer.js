@@ -37,6 +37,19 @@ const reducer = (state = initialState, action) => {
         ...state,
         searchResults: action.searchResults
       };
+    case actionTypes.SET_INFO_SEARCH_RESULT:
+      return {
+        ...state,
+        searchResult: {
+          id: action.searchResult.id,
+          artistId: action.searchResult.artistId,
+          artistName: action.searchResult.artistName,
+          track: action.searchResult.track,
+          collectionName: action.searchResult.collectionName,
+          kind: action.searchResult.kind,
+          trackPrice: action.searchResult.trackPrice
+        }
+      };
     case actionTypes.GET_PREV_25:
       if (state.sliceStart - 25 >= 0) {
         const newSliceStart = state.sliceStart - 25;
@@ -50,10 +63,10 @@ const reducer = (state = initialState, action) => {
       }
       return {
         ...state,
-        sliceStart: action.sliceStart,
-        sliceEnd: action.sliceEnd,
-        prevDisabled: action.prevDisabled,
-        nextDisabled: action.nextDisabled
+        sliceStart: state.sliceStart,
+        sliceEnd: state.sliceEnd,
+        prevDisabled: state.prevDisabled,
+        nextDisabled: state.nextDisabled
       };
     case actionTypes.GET_NEXT_25:
       console.log("GET NEXT 25");
