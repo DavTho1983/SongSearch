@@ -29,11 +29,11 @@ class SongInfo extends Component {
       kind: kind,
       trackPrice: trackPrice
     };
-    this.props.onUpdatePlaylist(data);
     axios
       .post("/playlist.json", data)
       .then(response => {
         console.log(response);
+        this.props.onUpdatePlaylist(data);
       })
       .catch(error => {
         console.log(error);
