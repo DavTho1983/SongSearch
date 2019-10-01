@@ -16,11 +16,11 @@ const initialState = {
     collectionName: "",
     kind: "",
     trackPrice: null
-  }
+  },
+  playlist: []
 };
 
 const reducer = (state = initialState, action) => {
-  console.log(action.type);
   switch (action.type) {
     case actionTypes.UPDATE_INPUT_VALUE:
       return {
@@ -36,6 +36,18 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         searchResults: action.searchResults
+      };
+    case actionTypes.GET_PLAYLIST:
+      return {
+        ...state,
+        playlist: action.playlist
+      };
+    case actionTypes.UPDATE_PLAYLIST:
+      const newPlaylist = state.playlist;
+      newPlaylist.push(action.playlistItem);
+      return {
+        ...state,
+        playlist: newPlaylist
       };
     case actionTypes.SET_INFO_SEARCH_RESULT:
       return {
@@ -69,12 +81,10 @@ const reducer = (state = initialState, action) => {
         nextDisabled: state.nextDisabled
       };
     case actionTypes.GET_NEXT_25:
-      console.log("GET NEXT 25");
       if (state.sliceEnd < state.searchResults.length) {
         const newSliceStart = state.sliceStart + 25;
         const newSliceEnd = state.sliceEnd + 25;
         state.sliceStart = newSliceStart;
-        console.log("NEW SLICE START", state.sliceStart);
         state.sliceEnd = newSliceEnd;
         state.prevDisabled = false;
         if (state.searchResults.length === newSliceEnd) {

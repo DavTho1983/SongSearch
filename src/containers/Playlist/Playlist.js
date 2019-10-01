@@ -1,15 +1,14 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import Auxilliary from "../../hoc/Auxilliary";
 import PlayListItem from "../../components/PlayListItem/PlayListItem";
 
 import classes from "./Playlist.css";
+import * as actionTypes from "../../store/actions";
 
 import axios from "../../hoc/axios-Firebase";
 
 class Playlist extends Component {
-  state = {
-    playlist: []
-  };
   componentDidMount() {
     const searchQuery = "/playlist.json";
     axios
@@ -25,7 +24,7 @@ class Playlist extends Component {
           });
         }
         console.log(playlistSongs);
-        this.setState({ playlist: playlistSongs });
+        this.props.onGetPlaylist(playlistSongs);
       })
       .catch(error => {
         console.log(error);
@@ -33,8 +32,8 @@ class Playlist extends Component {
   }
 
   render() {
-    if (this.state.playlist.length > 0) {
-      const results = this.state.playlist.map((playlistItem, index) => {
+    if (this.props.playlist.length > 0) {
+      const results = this.props.playlist.map((playlistItem, index) => {
         return (
           <PlayListItem
             key={index}
@@ -64,4 +63,23 @@ class Playlist extends Component {
   }
 }
 
-export default Playlist;
+const mapStateToProps = state => {
+  return {
+    playlist: state.playlist
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onGetPlaylist: value =>
+      dispatch({
+        type: actionTypes.GET_PLAYLIST,
+        playlist: value
+      })
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Playlist);
